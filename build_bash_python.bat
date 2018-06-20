@@ -1,0 +1,3 @@
+"C:\Program Files\Python35\python.exe" setup.py build
+@echo off
+set /p=Finished building! Hit ENTER to continue...
