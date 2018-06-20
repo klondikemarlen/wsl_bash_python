@@ -22,18 +22,24 @@ def convert_all_paths_to_linux(paths):
 
 
 def start_interpreter(cmd):
-    with subprocess.Popen("bash", stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True) as proc:
-        # proc.stdin.write(cmd)
-        # proc.stdin.flush()
-        # with proc.stdout as f:
-        #     print(f.read())
+    p = subprocess.Popen("bash", stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
+    output = p.communicate(cmd)
+    p.stdin.close()
+    # pprint(sys.stdin)
+    # pprint(sys.stdout)
 
-        # print("Foo:", foo)
-        try:
-            outs, errs = proc.communicate(cmd)
-        except subprocess.TimeoutExpired:
-            proc.kill()
-            outs, errs = proc.communicate()
+    # with subprocess.Popen("bash", stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True) as proc:
+    #     # proc.stdin.write(cmd)
+    #     proc.stdout.close()
+    #     # with proc.stdout as f:
+    #     #     print(f.read())
+    #
+    #     # print("Foo:", foo)
+    #     try:
+    #         outs, errs = proc.communicate(cmd)
+    #     except subprocess.TimeoutExpired:
+    #         proc.kill()
+    #         outs, errs = proc.communicate()
         # while True:
         #     with proc.stdin as f:
         #         line = proc.stdin.readline()
@@ -45,10 +51,10 @@ def start_interpreter(cmd):
         #         if errs:
         #             pprint(errs)
 
-        print("Output:")
-        pprint(outs)
-        print("Errors:")
-        pprint(errs)
+        # print("Output:")
+        # pprint(outs)
+        # print("Errors:")
+        # pprint(errs)
 
 
 if __name__ == "__main__":
@@ -57,4 +63,4 @@ if __name__ == "__main__":
     print("Converted args:", args)
     cmd = 'python3 {}'.format(' '.join(args))
     print("Command:", cmd)
-    start_interpreter(cmd)
+    start_interpreter(cmd.encode())
