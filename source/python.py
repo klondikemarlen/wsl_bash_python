@@ -1,8 +1,11 @@
+#!/usr/bin/evn python
+
 import subprocess
 import sys
 from pprint import pprint
 import pdb
 import shlex
+import tempfile
 
 
 def convert_to_linux_path(path):
@@ -22,9 +25,18 @@ def convert_all_paths_to_linux(paths):
 
 
 def start_interpreter(cmd):
-    p = subprocess.Popen("bash", stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
-    output = p.communicate(cmd)
-    p.stdin.close()
+    temp_file = tempfile.gettempdir() + "temp"
+    with open(temp_file, mode="wb") as f:
+        with subprocess.Popen("bash", stdin=subprocess.PIPE, stderr=subprocess.STDOUT, stdout=f) as proc:
+            output = proc.communicate(cmd)
+        f.flush()
+        # p2 = subprocess
+        # sys.stdout = p.stdout
+        # p.stdout.close()
+    print("Output file:")
+    with open(temp_file, mode="r") as f:
+        for line in f:
+            print(line.rstrip())
     # pprint(sys.stdin)
     # pprint(sys.stdout)
 
